@@ -1,0 +1,93 @@
+
+/*---------------*/
+/***** Bubba *****/
+/*---------------*/
+
+.effect-bubba {
+	background: #000;
+    text-align: center;
+    position: relative;
+    padding: 0 !important;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.effect-bubba img {
+	-webkit-transition: opacity 0.35s;
+	transition: opacity 0.35s;
+}
+
+.effect-bubba:hover img {
+	opacity: 0.4;
+}
+
+.effect-bubba .team-content {
+	padding: 10px 30px;
+	position: absolute;
+	top: 0;
+	width: 100%;
+    min-height: 100%;
+    opacity: 0;
+}
+
+.effect-bubba .team-content::before,
+.effect-bubba .team-content::after {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	bottom: 20px;
+	left: 20px;
+	content: '';
+	opacity: 0;
+	-webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+	transition: opacity 0.35s, transform 0.35s;
+}
+
+.effect-bubba .team-content::before {
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #fff;
+	-webkit-transform: scale(0,1);
+	transform: scale(0,1);
+}
+
+.effect-bubba .team-content::after {
+	border-right: 1px solid #fff;
+	border-left: 1px solid #fff;
+	-webkit-transform: scale(1,0);
+	transform: scale(1,0);
+}
+
+.effect-bubba h3 {
+	color: #fff;
+	padding-top: 30%;
+	-webkit-transition: -webkit-transform 0.35s;
+	transition: transform 0.35s;
+	-webkit-transform: translate3d(0,-20px,0);
+	transform: translate3d(0,-20px,0);
+}
+
+.effect-bubba p {
+	color: #fff;
+	padding: 20px 2.5em;
+	opacity: 0;
+	-webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+	transition: opacity 0.35s, transform 0.35s;
+	-webkit-transform: translate3d(0,20px,0);
+	transform: translate3d(0,20px,0);
+}
+
+
+.effect-bubba:hover .team-content { opacity: 1; }
+.effect-bubba:hover .team-content::before,
+.effect-bubba:hover .team-content::after {
+	opacity: 1;
+	-webkit-transform: scale(1);
+	transform: scale(1);
+}
+
+.effect-bubba:hover h3,
+.effect-bubba:hover p {
+	opacity: 1;
+	-webkit-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+}

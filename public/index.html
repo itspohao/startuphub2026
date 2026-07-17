@@ -1,0 +1,53 @@
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- 升級套件 -->
+        <script src="assets/js/jquery-3.6.0.min.js"></script>
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+        <script language="javascript" type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
+        <!------->
+        <script language="javascript" type="text/javascript" src="index.js"></script>
+        <script language="javascript" type="text/javascript" src="assets/js/teamsData.js"></script>
+        <link rel="stylesheet" type="text/css" href="assets/css/hover_effect.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+    </head>
+
+    <body>
+        <img src="./assets/images/top.png" style="width:100%" />
+        <div class="top-bar container">
+            <a id="team-select" class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:;">114年度<span
+                    class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:;" data-value="all">全部團隊</a></li>
+                <li class="divider"></li>
+                <li><a href="javascript:;" data-value="108">108年度</a></li>
+                <li><a href="javascript:;" data-value="109">109年度</a></li>
+                <li><a href="javascript:;" data-value="110">110年度</a></li>
+                <li><a href="javascript:;" data-value="111">111年度</a></li>
+                <li><a href="javascript:;" data-value="112">112年度</a></li>
+                <li><a href="javascript:;" data-value="113">113年度</a></li>
+                <li><a href="javascript:;" data-value="114">114年度</a></li>
+                <li><a href="javascript:;" data-value="115">115年度</a></li>
+            </ul>
+            <input style="display: none;" id="search" type="text" class="input-large search-query"
+                placeholder="請輸入團隊名稱">
+        </div>
+        <div class="float d-none d-md-block" style="display: none;right: -20vw;">
+            <div class="side-menu-title">
+                團隊列表
+            </div>
+            <div class="side-menu">
+            </div>
+        </div>
+        <div class="cv-spinner container" style="display: none;">
+            <span class="spinner"></span>
+        </div>
+        <div class="container d-block" id="team-list">
+        </div>
+    </body>
+
+</html>
