@@ -158,6 +158,8 @@ function initSpContent(team, year) {
   var coverImage = hasNewContent ? 'cover.jpg' : 'carousel1.jpg';
   var detailTexts = hasNewContent ? team.section : team.intro || [];
   var imageCount = hasNewContent ? ('imgs' in team ? team.imgs : 2) : 2;
+  // 舊年度以 carousel1.jpg 作為封面，內容圖片從 carousel2.jpg 起算，避免重複顯示封面。
+  var contentImageCount = hasNewContent ? imageCount : Math.max(imageCount - 1, 0);
 
   if (team.youtube) {
     var vid = $('#sp-content-vid');
@@ -208,8 +210,8 @@ function initSpContent(team, year) {
       description.text(text);
     }
 
-    if (i < imageCount) {
-      var imageName = hasNewContent ? `team_photo_${i + 1}.jpg` : `carousel${i + 1}.jpg`;
+    if (i < contentImageCount) {
+      var imageName = hasNewContent ? `team_photo_${i + 1}.jpg` : `carousel${i + 2}.jpg`;
       $('<img>')
         .attr('src', `./assets/images/${year}/${index}/${imageName}`)
         .attr('alt', `${team.name} 團隊圖片 ${i + 1}`)
