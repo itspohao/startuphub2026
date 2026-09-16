@@ -186,6 +186,9 @@ function initSpContent(team, year) {
 
   var intro = $('.intro');
   appendTeamInfo(intro, '團隊名稱', team.name, '未提供');
+  if (team.tagline) {
+    appendTeamInfo(intro, '一句話形容自己', team.tagline, '');
+  }
   appendTeamInfo(intro, '產品服務', team.product, '未提供');
   appendTeamInfo(intro, '發展階段', team.stage, '未提供');
   appendTeamInfo(intro, '登記時間', team.found, '未提供');
