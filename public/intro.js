@@ -178,7 +178,7 @@ function initSpContent(team, year) {
     .css('object-fit', 'cover')
     .appendTo($('.cover'));
   $('<p>')
-    .text(`圖片來源：由${team.name}提供`)
+    .text(`圖片來源：${team.imageSource || `由${team.name}提供`}`)
     .css('text-align', 'end')
     .css('color', '#787878')
     .css('font-size', '0.8rem')
