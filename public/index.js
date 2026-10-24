@@ -2,57 +2,37 @@ function getYearLabel(year) {
   return `${year}年度`;
 }
 
-var player = null;
-
-function initYearDropdown() {
-  var trigger = $('#team-select');
-  var menu = $('.dropdown-menu');
-
-  menu.hide();
-
-  trigger.on('click', function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    menu.toggle();
-  });
-
-  menu.on('click', function (event) {
-    event.stopPropagation();
-  });
-
-  $(document).on('click', function () {
-    menu.hide();
-  });
-}
-
 function createCards(data, year) {
   var img = `./assets/images/${year}/${data.index}/logo.jpg`;
-  var card = $('<div>')
+  var card = $('<a>')
     .addClass('thumbnail our-team')
-    .attr('data-index', data.index)
-    .attr('data-year', year);
-  $('<img>').attr('src', img).attr('alt', 'test').appendTo(card);
+    .attr('href', `./intro.html?team=${data.index}&year=${year}`)
+    .attr('aria-label', `查看${data.name}團隊介紹`);
+  $('<img>').attr('src', img).attr('alt', `${data.name} logo`).appendTo(card);
   var content = $('<div>').addClass('team-content').appendTo(card);
-  $('<h3>').addClass('title').text(data.name).appendTo(content);
+  $('<h2>').addClass('title').text(data.name).appendTo(content);
   $('<span>').addClass('post').text(TAGS[data.tags]).appendTo(content);
   return card;
 }
 
-function createSideMenu(data) {
-  var item = $('<div>').text(data.name).attr('data-index', data.index);
+function createSideMenu(data, year) {
+  var item = $('<a>')
+    .text(data.name)
+    .attr('href', `./intro.html?team=${data.index}&year=${year}`)
+    .attr('aria-label', `查看${data.name}團隊介紹`);
   return item;
 }
 
 function createMobileList(data, year) {
   var img = `./assets/images/${year}/${data.index}/logo.jpg`;
-  var item = $('<div>')
+  var item = $('<a>')
     .addClass('list-item')
-    .attr('data-index', data.index)
-    .attr('data-year', year);
+    .attr('href', `./intro.html?team=${data.index}&year=${year}`)
+    .attr('aria-label', `查看${data.name}團隊介紹`);
   var avatar = $('<div>').addClass('list-item-avatar');
-  $('<img>').addClass('avatar').attr('src', img).appendTo(avatar);
+  $('<img>').addClass('avatar').attr('src', img).attr('alt', `${data.name} logo`).appendTo(avatar);
   var content = $('<div>').addClass('list-item-content').text(data.name);
-  var chevron = $('<div>').addClass('list-item-chevron');
+  var chevron = $('<div>').addClass('list-item-chevron').attr('aria-hidden', 'true');
   $('<i>').addClass('fa fa-chevron-right').appendTo(chevron);
   item.append(avatar);
   item.append(content);
@@ -65,23 +45,28 @@ function initPage(years) {
   var sideMenu = $('.side-menu');
   var row = $('<div>').addClass('row form-group d-none d-md-flex');
   var mobile = $('<div>').addClass('d-block d-md-none');
+  var teamCount = 0;
+  list.attr('aria-busy', 'true').empty();
+  sideMenu.empty();
   years.forEach((y) => {
     var data = TEAMS[y] || [];
     data.filter(team => !team.hidden).forEach(function (team) {
       var col = $('<div>').addClass('col-12 col-sm-6 col-md-4 col-lg-3').appendTo(row);
       col.append(createCards(team, y));
-      sideMenu.append(createSideMenu(team));
+      sideMenu.append(createSideMenu(team, y));
       mobile.append(createMobileList(team, y));
+      teamCount++;
     });
   });
   list.append(row);
   list.append(mobile);
   $('.cv-spinner').hide();
-  $('#team-list').show();
-  // bind click event
-  $('div.thumbnail').click(navgation);
-  $('.side-menu div').click(navgation);
-  $('.list-item').click(navgation);
+  $('#team-list').attr('aria-busy', 'false').show();
+  $('#team-status').text(
+    years.length === 1
+      ? `已載入${getYearLabel(years[0])}，共${teamCount}個團隊。`
+      : `已載入全部團隊，共${teamCount}個團隊。`
+  );
 }
 
 function navgation() {
@@ -92,22 +77,30 @@ function navgation() {
 }
 
 function loadYouTube(year) {
-  if (YOUTUBE[year]) {
-    var list = $('#team-list');
-    var video = $('<div>').addClass('video');
-    $('<div>').attr('id', 'player').appendTo(video);
-    list.append(video);
-    player = new YT.Player('player', {
-      videoId: YOUTUBE[year],
+  if (!YOUTUBE[year]) return;
+
+  var list = $('#team-list');
+  var title = `觀看${getYearLabel(year)}團隊介紹影片`;
+  var link = $('<a>')
+    .addClass('youtube-link-card')
+    .attr({
+      href: `https://www.youtube.com/watch?v=${encodeURIComponent(YOUTUBE[year])}`,
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      'aria-label': `${title}（YouTube，另開新視窗）`,
     });
-  }
+  $('<img>')
+    .attr({
+      src: `https://img.youtube.com/vi/${encodeURIComponent(YOUTUBE[year])}/hqdefault.jpg`,
+      alt: '',
+    })
+    .attr('onerror', 'this.src="./assets/images/sme.jpg"')
+    .appendTo(link);
+  $('<span>').addClass('youtube-link-title').text(title).appendTo(link);
+  $('<div>').addClass('video').append(link).appendTo(list);
 }
 
 function clearOverviewVideo() {
-  if (player && typeof player.destroy === 'function') {
-    player.destroy();
-  }
-  player = null;
   $('#team-list .video').remove();
 }
 
@@ -118,20 +111,12 @@ function refreshOverviewVideo() {
   }
 }
 
-// 確保影片會事先載入
-function onYouTubeIframeAPIReady() {
-  refreshOverviewVideo();
-  if (selectedTeam.length > 0) {
-    initPage(selectedTeam);
-  }
-}
-
 var selectedTeam = ['115'];
 
 $(document).ready(function () {
   var TOTALYEAR = ['108', '109', '110', '111', '112', '113', '114', '115'];
-  $('#team-select').html(getYearLabel(selectedTeam[0])).append('<span class="caret"></span>');
-  initYearDropdown();
+  $('#team-select').val(selectedTeam[0]);
+  initPage(selectedTeam);
   $('.float').hover(
     function () {
       $(this).stop().animate({ right: '0' }, 'medium');
@@ -141,24 +126,11 @@ $(document).ready(function () {
     },
     500
   );
-  $('.dropdown-menu>li>a').click(function () {
-    var list = $('#team-list');
-    var sideMenu = $('.side-menu');
-    $('.cv-spinner').show();
-    list.hide();
-    list.empty();
-    sideMenu.empty();
-    var selection = $(this).attr('data-value');
-    var select = $('#team-select');
-    select.html(selection === 'all' ? $(this).text() : getYearLabel(selection)).append('<span class="caret"></span>');
-    $('.dropdown-menu').hide();
+  $('#team-select').on('change', function () {
+    var selection = $(this).val();
     selectedTeam = selection === 'all' ? TOTALYEAR : [selection];
-
-    setTimeout(() => {
-      if (YT.loaded) {
-        refreshOverviewVideo();
-      }
-      initPage(selectedTeam);
-    }, 500);
+    initPage(selectedTeam);
+    refreshOverviewVideo();
   });
+  refreshOverviewVideo();
 });
