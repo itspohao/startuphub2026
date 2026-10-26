@@ -15,14 +15,6 @@ function createCards(data, year) {
   return card;
 }
 
-function createSideMenu(data, year) {
-  var item = $('<a>')
-    .text(data.name)
-    .attr('href', `./intro.html?team=${data.index}&year=${year}`)
-    .attr('aria-label', `查看${data.name}團隊介紹`);
-  return item;
-}
-
 function createMobileList(data, year) {
   var img = `./assets/images/${year}/${data.index}/logo.jpg`;
   var item = $('<a>')
@@ -31,7 +23,7 @@ function createMobileList(data, year) {
     .attr('aria-label', `查看${data.name}團隊介紹`);
   var avatar = $('<div>').addClass('list-item-avatar');
   $('<img>').addClass('avatar').attr('src', img).attr('alt', `${data.name} logo`).appendTo(avatar);
-  var content = $('<div>').addClass('list-item-content').text(data.name);
+  var content = $('<h2>').addClass('list-item-content').text(data.name);
   var chevron = $('<div>').addClass('list-item-chevron').attr('aria-hidden', 'true');
   $('<i>').addClass('fa fa-chevron-right').appendTo(chevron);
   item.append(avatar);
@@ -42,18 +34,15 @@ function createMobileList(data, year) {
 
 function initPage(years) {
   var list = $('#team-list');
-  var sideMenu = $('.side-menu');
   var row = $('<div>').addClass('row form-group d-none d-md-flex');
   var mobile = $('<div>').addClass('d-block d-md-none');
   var teamCount = 0;
   list.attr('aria-busy', 'true').empty();
-  sideMenu.empty();
   years.forEach((y) => {
     var data = TEAMS[y] || [];
     data.filter(team => !team.hidden).forEach(function (team) {
       var col = $('<div>').addClass('col-12 col-sm-6 col-md-4 col-lg-3').appendTo(row);
       col.append(createCards(team, y));
-      sideMenu.append(createSideMenu(team, y));
       mobile.append(createMobileList(team, y));
       teamCount++;
     });
@@ -67,13 +56,6 @@ function initPage(years) {
       ? `已載入${getYearLabel(years[0])}，共${teamCount}個團隊。`
       : `已載入全部團隊，共${teamCount}個團隊。`
   );
-}
-
-function navgation() {
-  var team = $(this).attr('data-index');
-  var year = $(this).attr('data-year');
-  console.info(`${year}, ${team}`);
-  window.location = `./intro.html?team=${team}&year=${year}`;
 }
 
 function loadYouTube(year) {
@@ -132,15 +114,6 @@ $(document).ready(function () {
   var TOTALYEAR = ['108', '109', '110', '111', '112', '113', '114', '115'];
   $('#team-select').val(selectedTeam[0]);
   initPage(selectedTeam);
-  $('.float').hover(
-    function () {
-      $(this).stop().animate({ right: '0' }, 'medium');
-    },
-    function () {
-      $(this).stop().animate({ right: '-20vw' }, 'medium');
-    },
-    500
-  );
   $('#team-select').on('change', function () {
     var selection = $(this).val();
     selectedTeam = selection === 'all' ? TOTALYEAR : [selection];

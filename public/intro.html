@@ -26,8 +26,13 @@
 
 <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
-
-    <img src="./assets/images/top.png" style="width:100%" alt="" />
+    <header class="site-header">
+        <img src="./assets/images/top.png" style="width:100%" alt="" />
+        <nav class="site-nav container" aria-label="主要導覽">
+            <a href="./index.html">培育團隊</a>
+            <a href="./mentors.html">導師群</a>
+        </nav>
+    </header>
     <main id="main-content" tabindex="-1">
     <div class="container">
         <div class="row intro-content">
@@ -52,10 +57,6 @@
             </div>
             <div class="col-12 col-md-5">
                 <div class="project_description">
-                    <div id="team_name" class="widget_title">
-                        <h2><span class="team-name"></span></h2>
-                        <div id="social-link" class="btn-group btn-links" role="group" aria-label="團隊相關連結"></div>
-                    </div>
                 </div>
                 <div class="project_details">
                 </div>
@@ -63,6 +64,7 @@
         </div>
         <section id="sp-content" aria-labelledby="team-page-title">
             <h1 id="team-page-title" class="page-title"></h1>
+            <div id="social-link" class="btn-group btn-links" role="group" aria-label="團隊相關連結"></div>
             <div class="cover-photo">
                 <div class="cover"></div>
             </div>
@@ -88,6 +90,9 @@
         </section>
     </div>
     </main>
+    <footer class="site-footer">
+        <p>新創圓夢網・新創基地培育團隊</p>
+    </footer>
 </body>
 
 </html>

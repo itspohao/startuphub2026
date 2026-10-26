@@ -105,50 +105,6 @@ html {
   margin-bottom: 30px;
 }
 
-.float {
-  display: flex;
-  align-items: center;
-  position: fixed;
-  z-index: 999;
-  top: 20vh;
-  color: #fff;
-  text-align: center;
-}
-
-.float > div {
-  background-color: #f8b302;
-  cursor: pointer;
-}
-
-.side-menu > a:hover,
-.side-menu > a:focus-visible {
-  color: #555555;
-}
-
-.side-menu {
-  width: 20vw;
-  font-size: 1.2rem;
-}
-
-.side-menu > a {
-  border: solid 1px #fff;
-  color: inherit;
-  display: block;
-  padding: 3px 0;
-  text-decoration: none;
-}
-
-.side-menu-title {
-  border-right: solid 2px #fff;
-  padding: 12px 8px;
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  font-size: 1rem;
-  max-height: 120px;
-  border-radius: 15px 0px 0px 15px;
-  white-space: nowrap;
-}
-
 /* 團隊資料 intro */
 
 .row {
@@ -244,6 +200,16 @@ html {
   background-color: transparent;
 }
 
+.remark a {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.remark a:hover,
+.remark a:focus-visible {
+  color: #003f72;
+}
+
 .label-text {
   font-size: 1.2rem;
   letter-spacing: 2px;
@@ -298,92 +264,37 @@ html {
   text-decoration: none;
 }
 .our-team img {
+  display: block;
   width: 100%;
-  height: auto;
-  transition: all 0.55s ease 0s;
+  height: 220px;
+  object-fit: contain;
+  padding: 16px;
+  transition: opacity 0.2s ease;
 }
 .our-team:hover,
 .our-team:focus-visible {
-  background: #3f3f3f;
-  color: #ffffff;
+  background: #f5f9fc;
+  color: inherit;
   outline: 3px solid #005a9c;
   outline-offset: 3px;
 }
 .our-team:hover img,
 .our-team:focus-visible img {
-  opacity: 0.12;
+  opacity: 0.88;
 }
 .our-team .team-content {
-  padding: 5px 10px 10px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  opacity: 0;
-  transform: translate(-50%, -50%);
-  transform-origin: 0 0;
-  transition: all 0.55s ease 0s;
-}
-.our-team:hover .team-content,
-.our-team:focus-visible .team-content {
+  padding: 0 14px 14px;
+  position: static;
   opacity: 1;
-}
-.our-team .team-content:before,
-.our-team .team-content:after {
-  content: '';
-  width: 400px;
-  height: 2px;
-  background: #95ccea;
-  position: absolute;
-  top: 0;
-  left: 10px;
-  transform: translateX(100%);
-  transition: all 0.55s ease 0s;
-}
-.our-team .team-content:after {
-  top: auto;
-  left: auto;
-  bottom: 0;
-  right: 10px;
-  transform: translateX(-100%);
-}
-.our-team:hover .team-content:before,
-.our-team:hover .team-content:after,
-.our-team:focus-visible .team-content:before,
-.our-team:focus-visible .team-content:after {
-  transform: translate(0, 0);
-  transition-delay: 0.15s;
+  transform: none;
 }
 .our-team .title {
-  font-size: 20px;
-  font-weight: 400;
-  color: #fff;
-  text-transform: uppercase;
+  color: #1f2933;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.4;
   margin: 0;
-}
-.our-team .title:before,
-.our-team .title:after {
-  content: '';
-  width: 2px;
-  height: 300px;
-  background: #95ccea;
-  position: absolute;
-  top: 10px;
-  right: 0;
-  transform: translateY(100%);
-  transition: all 0.55s ease 0s;
-}
-.our-team .title:after {
-  top: auto;
-  right: auto;
-  bottom: 10px;
-  left: 0;
-  transform: translateY(-100%);
-}
-.our-team:hover .title:before,
-.our-team:hover .title:after,
-.our-team:focus-visible .title:before,
-.our-team:focus-visible .title:after {
-  transform: translate(0, 0);
+  text-transform: none;
 }
 .our-team .post {
   display: block;
@@ -427,7 +338,9 @@ html {
 }
 
 .list-item-content {
+  display: block !important;
   flex: 1;
+  margin: 0;
   padding: 8px 16px;
   font-size: 18px;
   font-weight: 500;
@@ -441,6 +354,36 @@ html {
 
 .top-bar {
   position: relative;
+}
+
+.site-nav {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  margin: 12px auto 0;
+}
+
+.site-nav a {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: #003f72;
+}
+
+.site-footer {
+  border-top: 1px solid #d0d7de;
+  color: #4a5560;
+  font-size: 0.9rem;
+  margin-top: 48px;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 0;
 }
 
 .year-select {

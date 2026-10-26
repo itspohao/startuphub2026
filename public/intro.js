@@ -1,8 +1,5 @@
 function initIntro(team) {
   var description = $('.project_description');
-  var buttonGroup = $('#social-link');
-  $('#team_name .team-name').text(team.name);
-  buttonGroup.attr('aria-label', `${team.name}相關連結`);
   team.intro.forEach((element) => {
     $('<p>').text(element).appendTo(description);
   });
@@ -12,18 +9,16 @@ function initIntro(team) {
       $('<p>').text(element).appendTo(description);
     });
   }
-  if (team.web) {
-    buttonGroup.append(initSocialButton(0, team.web));
-  }
-  if (team.fb) {
-    buttonGroup.append(initSocialButton(1, team.fb));
-  }
-  if (team.ig) {
-    buttonGroup.append(initSocialButton(2, team.ig));
-  }
-  if (team.podcast) {
-    buttonGroup.append(initSocialButton(3, team.podcast));
-  }
+  initSocialLinks(team);
+}
+
+function initSocialLinks(team) {
+  var buttonGroup = $('#social-link').empty();
+  buttonGroup.attr('aria-label', `${team.name}相關連結`);
+  if (team.web) buttonGroup.append(initSocialButton(0, team.web));
+  if (team.fb) buttonGroup.append(initSocialButton(1, team.fb));
+  if (team.ig) buttonGroup.append(initSocialButton(2, team.ig));
+  if (team.podcast) buttonGroup.append(initSocialButton(3, team.podcast));
 }
 function initSocialButton(type, url) {
   var icon = '';
@@ -200,6 +195,7 @@ function initSpContent(team, year) {
 
   $('#team-page-title').text(team.name);
   document.title = `${team.name}｜新創基地團隊｜新創圓夢網`;
+  initSocialLinks(team);
 
   if (team.youtube) {
     var vid = $('#sp-content-vid');
@@ -311,11 +307,26 @@ $(document).ready(function () {
   initTeamsCarousel(data, teamYear);
 
   if ($.fn.owlCarousel) {
-    $('.owl-carousel').owlCarousel({
+    var carousel = $('.owl-carousel');
+    var updateCarouselAccessibility = function () {
+      window.setTimeout(function () {
+        carousel.find('.owl-item').each(function () {
+          var isHidden = !this.classList.contains('active');
+          this.setAttribute('aria-hidden', String(isHidden));
+          this.inert = isHidden;
+        });
+      });
+    };
+    carousel.on(
+      'initialized.owl.carousel changed.owl.carousel refreshed.owl.carousel',
+      updateCarouselAccessibility
+    );
+    carousel.owlCarousel({
       startPosition: teamIndex,
-      loop: true,
+      loop: false,
       margin: 10,
       nav: true,
+      navElement: 'button type="button"',
       navText: [
         '<span class="sr-only">上一個團隊</span>',
         '<span class="sr-only">下一個團隊</span>',
@@ -333,7 +344,7 @@ $(document).ready(function () {
         },
       },
     });
-    $('.owl-prev').attr('aria-label', '上一個團隊');
-    $('.owl-next').attr('aria-label', '下一個團隊');
+    carousel.find('.owl-prev').attr('aria-label', '上一個團隊');
+    carousel.find('.owl-next').attr('aria-label', '下一個團隊');
   }
 });

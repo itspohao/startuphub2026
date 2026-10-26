@@ -17,32 +17,32 @@
 
     <body>
         <a class="skip-link" href="#main-content">跳到主要內容</a>
-        <img src="./assets/images/top.png" style="width:100%" alt="" />
-        <div class="top-bar container">
-            <label class="sr-only" for="team-select">選擇培育年度</label>
-            <select id="team-select" class="year-select">
-                <option value="all">全部團隊</option>
-                <option value="108">108年度</option>
-                <option value="109">109年度</option>
-                <option value="110">110年度</option>
-                <option value="111">111年度</option>
-                <option value="112">112年度</option>
-                <option value="113">113年度</option>
-                <option value="114">114年度</option>
-                <option value="115" selected>115年度</option>
-            </select>
-            <input style="display: none;" id="search" type="text" class="input-large search-query"
-                placeholder="請輸入團隊名稱">
-        </div>
-        <div class="float d-none d-md-block" style="display: none;right: -20vw;">
-            <div class="side-menu-title">
-                團隊列表
-            </div>
-            <div class="side-menu">
-            </div>
-        </div>
+        <header class="site-header">
+            <img src="./assets/images/top.png" style="width:100%" alt="" />
+            <nav class="site-nav container" aria-label="主要導覽">
+                <a href="./index.html" aria-current="page">培育團隊</a>
+                <a href="./mentors.html">導師群</a>
+            </nav>
+        </header>
         <main id="main-content" tabindex="-1">
             <h1 class="sr-only">新創基地培育團隊</h1>
+            <section class="top-bar container" aria-labelledby="year-filter-title">
+                <h2 id="year-filter-title" class="sr-only">選擇培育年度</h2>
+                <label class="sr-only" for="team-select">選擇培育年度</label>
+                <select id="team-select" class="year-select">
+                    <option value="all">全部團隊</option>
+                    <option value="108">108年度</option>
+                    <option value="109">109年度</option>
+                    <option value="110">110年度</option>
+                    <option value="111">111年度</option>
+                    <option value="112">112年度</option>
+                    <option value="113">113年度</option>
+                    <option value="114">114年度</option>
+                    <option value="115" selected>115年度</option>
+                </select>
+                <input style="display: none;" id="search" type="text" class="input-large search-query"
+                    placeholder="請輸入團隊名稱">
+            </section>
             <div class="cv-spinner container" style="display: none;">
                 <span class="spinner"></span>
             </div>
@@ -50,6 +50,9 @@
             <div class="container d-block" id="team-list" aria-busy="true">
             </div>
         </main>
+        <footer class="site-footer">
+            <p>新創圓夢網・新創基地培育團隊</p>
+        </footer>
     </body>
 
 </html>
