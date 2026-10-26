@@ -62,21 +62,36 @@ function initSocialButton(type, url) {
 }
 
 function createYouTubeLink(videoId, title) {
+  var encodedVideoId = encodeURIComponent(videoId);
+  var thumbnailSources = [
+    `https://img.youtube.com/vi/${encodedVideoId}/maxresdefault.jpg`,
+    `https://img.youtube.com/vi/${encodedVideoId}/sddefault.jpg`,
+    `https://img.youtube.com/vi/${encodedVideoId}/hqdefault.jpg`,
+  ];
+  var thumbnailIndex = 0;
   var link = $('<a>')
     .addClass('youtube-link-card')
     .attr({
-      href: `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`,
+      href: `https://www.youtube.com/watch?v=${encodedVideoId}`,
       target: '_blank',
       rel: 'noopener noreferrer',
       'aria-label': `${title}（YouTube，另開新視窗）`,
     });
-  $('<img>')
+  var thumbnail = $('<img>')
     .attr({
-      src: `https://img.youtube.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`,
+      src: thumbnailSources[thumbnailIndex],
       alt: '',
     })
-    .attr('onerror', 'this.src="./assets/images/sme.jpg"')
-    .appendTo(link);
+    .on('error', function () {
+      thumbnailIndex += 1;
+      if (thumbnailIndex < thumbnailSources.length) {
+        this.src = thumbnailSources[thumbnailIndex];
+      } else {
+        thumbnail.off('error');
+        this.src = './assets/images/sme.jpg';
+      }
+    });
+  $('<span>').addClass('youtube-thumbnail').append(thumbnail).appendTo(link);
   $('<span>').addClass('youtube-link-title').text(title).appendTo(link);
   return link;
 }

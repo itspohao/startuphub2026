@@ -81,21 +81,36 @@ function loadYouTube(year) {
 
   var list = $('#team-list');
   var title = `觀看${getYearLabel(year)}團隊介紹影片`;
+  var videoId = encodeURIComponent(YOUTUBE[year]);
+  var thumbnailSources = [
+    `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+    `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
+    `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+  ];
+  var thumbnailIndex = 0;
   var link = $('<a>')
     .addClass('youtube-link-card')
     .attr({
-      href: `https://www.youtube.com/watch?v=${encodeURIComponent(YOUTUBE[year])}`,
+      href: `https://www.youtube.com/watch?v=${videoId}`,
       target: '_blank',
       rel: 'noopener noreferrer',
       'aria-label': `${title}（YouTube，另開新視窗）`,
     });
-  $('<img>')
+  var thumbnail = $('<img>')
     .attr({
-      src: `https://img.youtube.com/vi/${encodeURIComponent(YOUTUBE[year])}/hqdefault.jpg`,
+      src: thumbnailSources[thumbnailIndex],
       alt: '',
     })
-    .attr('onerror', 'this.src="./assets/images/sme.jpg"')
-    .appendTo(link);
+    .on('error', function () {
+      thumbnailIndex += 1;
+      if (thumbnailIndex < thumbnailSources.length) {
+        this.src = thumbnailSources[thumbnailIndex];
+      } else {
+        thumbnail.off('error');
+        this.src = './assets/images/sme.jpg';
+      }
+    });
+  $('<span>').addClass('youtube-thumbnail').append(thumbnail).appendTo(link);
   $('<span>').addClass('youtube-link-title').text(title).appendTo(link);
   $('<div>').addClass('video').append(link).appendTo(list);
 }

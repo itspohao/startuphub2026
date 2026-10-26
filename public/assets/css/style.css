@@ -42,9 +42,16 @@ html {
   text-decoration: none;
 }
 
-.youtube-link-card img {
+.youtube-thumbnail {
+  aspect-ratio: 16 / 9;
   display: block;
-  height: auto;
+  overflow: hidden;
+}
+
+.youtube-thumbnail img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
   width: 100%;
 }
 
