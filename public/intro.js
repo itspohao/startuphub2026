@@ -155,7 +155,6 @@ function initTeamsCarousel(data, year) {
     $('<img>').attr('src', img).attr('alt', `${team.name} logo`).appendTo(card);
     var content = $('<div>').addClass('team-content').appendTo(card);
     $('<h3>').addClass('title').text(team.name).appendTo(content);
-    $('<span>').addClass('post').text(TAGS[team.tags]).appendTo(content);
     list.append(card);
   });
 }

@@ -11,7 +11,6 @@ function createCards(data, year) {
   $('<img>').attr('src', img).attr('alt', `${data.name} logo`).appendTo(card);
   var content = $('<div>').addClass('team-content').appendTo(card);
   $('<h2>').addClass('title').text(data.name).appendTo(content);
-  $('<span>').addClass('post').text(TAGS[data.tags]).appendTo(content);
   return card;
 }
 
