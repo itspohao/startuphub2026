@@ -1720,6 +1720,7 @@ const TEAMS = {
     },
     {
       "index": 13,
+      "assetIndex": 14,
       "name": "歐司開人工智慧股份有限公司",
       "product": "專為成交而打造的預約系統！管理和同步多個日曆而設計，幫助商家更好的做生意",
       "stage": "新創企業",
@@ -1736,6 +1737,7 @@ const TEAMS = {
     },
     {
       "index": 14,
+      "assetIndex": 15,
       "name": "全日罩健康股份有限公司",
       "product": "利用非藥物訓練課程減緩失智症",
       "stage": "新創企業",
@@ -1752,6 +1754,7 @@ const TEAMS = {
     },
     {
       "index": 15,
+      "assetIndex": 16,
       "name": "開店趣科技股份有限公司",
       "product": "全方位開店支援與數據驅動決策平台",
       "stage": "新創企業",
@@ -1768,6 +1771,7 @@ const TEAMS = {
     },
     {
       "index": 16,
+      "assetIndex": 17,
       "name": "廣聚股份有限公司",
       "product": "DayinUP外包接案資源整合平台",
       "stage": "新創企業",

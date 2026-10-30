@@ -95,7 +95,7 @@ function initImagesCarousel(team, year) {
   var list = $('.carousel-inner');
   var indicator = $('.carousel-indicators');
   var indicatorIndex = 0;
-  var index = team.index;
+  var index = team.assetIndex !== undefined ? team.assetIndex : team.index;
 
 
   if (team.youtube) {
@@ -145,7 +145,8 @@ function initImagesCarousel(team, year) {
 function initTeamsCarousel(data, year) {
   var list = $('#carousel_list');
   $(data).each(function (index, team) {
-    var img = `./assets/images/${year}/${index}/logo.jpg`;
+    var assetIndex = team.assetIndex !== undefined ? team.assetIndex : team.index;
+    var img = `./assets/images/${year}/${assetIndex}/logo.jpg`;
     var card = $('<a>')
       .addClass('thumbnail our-team')
       .attr({
@@ -183,7 +184,7 @@ function appendTeamInfo(container, label, value, fallback) {
 }
 
 function initSpContent(team, year) {
-  var index = team.index;
+  var index = team.assetIndex !== undefined ? team.assetIndex : team.index;
   var hasNewContent = Array.isArray(team.section);
   var coverImage = hasNewContent ? 'cover.jpg' : 'carousel1.jpg';
   var detailTexts = hasNewContent ? team.section : team.intro || [];

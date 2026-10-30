@@ -3,7 +3,8 @@ function getYearLabel(year) {
 }
 
 function createCards(data, year) {
-  var img = `./assets/images/${year}/${data.index}/logo.jpg`;
+  var assetIndex = data.assetIndex !== undefined ? data.assetIndex : data.index;
+  var img = `./assets/images/${year}/${assetIndex}/logo.jpg`;
   var card = $('<a>')
     .addClass('thumbnail our-team')
     .attr('href', `./intro.html?team=${data.index}&year=${year}`)
@@ -15,7 +16,8 @@ function createCards(data, year) {
 }
 
 function createMobileList(data, year) {
-  var img = `./assets/images/${year}/${data.index}/logo.jpg`;
+  var assetIndex = data.assetIndex !== undefined ? data.assetIndex : data.index;
+  var img = `./assets/images/${year}/${assetIndex}/logo.jpg`;
   var item = $('<a>')
     .addClass('list-item')
     .attr('href', `./intro.html?team=${data.index}&year=${year}`)
