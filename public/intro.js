@@ -9,51 +9,20 @@ function initIntro(team) {
       $('<p>').text(element).appendTo(description);
     });
   }
-  initSocialLinks(team);
 }
 
-function initSocialLinks(team) {
-  var buttonGroup = $('#social-link').empty();
-  buttonGroup.attr('aria-label', `${team.name}相關連結`);
-  if (team.web) buttonGroup.append(initSocialButton(0, team.web));
-  if (team.fb) buttonGroup.append(initSocialButton(1, team.fb));
-  if (team.ig) buttonGroup.append(initSocialButton(2, team.ig));
-  if (team.podcast) buttonGroup.append(initSocialButton(3, team.podcast));
-}
-function initSocialButton(type, url) {
-  var icon = '';
-  var label = '';
-  switch (type) {
-    case 0:
-      icon = 'fa fa-globe';
-      label = '官方網站';
-      break;
-    case 1:
-      icon = 'fa fa-facebook';
-      label = 'Facebook 官方頁面';
-      break;
-    case 2:
-      icon = 'fa fa-instagram';
-      label = 'Instagram 官方頁面';
-      break;
-    case 3:
-      icon = 'fa fa-bullhorn';
-      label = 'Podcast';
-      break;
-    default:
-      return;
-  }
-  var link = $('<a>')
-    .addClass('btn')
+function appendTeamLink(container, team, label, url) {
+  var row = $('<div>').addClass('team-link-row').text(`${label}：`).appendTo(container);
+  $('<a>')
     .attr({
       href: url,
       target: '_blank',
       rel: 'noopener noreferrer',
-      'aria-label': `${label}（另開新視窗）`,
-    });
-  $('<i>').addClass(icon).attr('aria-hidden', 'true').appendTo(link);
-  $('<span>').addClass('sr-only').text(`${label}（另開新視窗）`).appendTo(link);
-  return link;
+      'aria-label': `前往${team.name}${label}（另開新視窗）`,
+    })
+    .text(url)
+    .append($('<span>').addClass('sr-only').text('（另開新視窗）'))
+    .appendTo(row);
 }
 
 function createYouTubeLink(videoId, title) {
@@ -195,7 +164,6 @@ function initSpContent(team, year) {
 
   $('#team-page-title').text(team.name);
   document.title = `${team.name}｜新創基地團隊｜新創圓夢網`;
-  initSocialLinks(team);
 
   if (team.youtube) {
     var vid = $('#sp-content-vid');
@@ -267,21 +235,14 @@ function initSpContent(team, year) {
   });
 
   var remark = $('.remark').addClass('label-text');
-  var link = $('<div>').text(`官方網站：`).appendTo(remark);
   if (team.web) {
-    $('<a>')
-      .attr({
-        href: team.web,
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        'aria-label': `前往${team.name}官方網站（另開新視窗）`,
-      })
-      .text(team.web)
-      .append($('<span>').addClass('sr-only').text('（另開新視窗）'))
-      .appendTo(link);
+    appendTeamLink(remark, team, '官方網站', team.web);
   } else {
-    $('<span>').text('建置中').appendTo(link);
+    $('<div>').text('官方網站：建置中').appendTo(remark);
   }
+  if (team.fb) appendTeamLink(remark, team, 'Facebook 官方頁面', team.fb);
+  if (team.ig) appendTeamLink(remark, team, 'Instagram 官方頁面', team.ig);
+  if (team.podcast) appendTeamLink(remark, team, 'Podcast', team.podcast);
 
   $('<div>')
     .css({ display: 'flex' })

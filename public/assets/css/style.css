@@ -203,6 +203,7 @@ html {
 .remark a {
   color: #0056b3;
   text-decoration: underline;
+  overflow-wrap: anywhere;
 }
 
 .remark a:hover,
