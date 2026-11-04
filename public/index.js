@@ -110,16 +110,33 @@ function refreshOverviewVideo() {
 }
 
 var selectedTeam = ['115'];
+var TOTALYEAR = ['108', '109', '110', '111', '112', '113', '114', '115'];
+
+function getSelectedYearFromUrl() {
+  var year = new URLSearchParams(window.location.search).get('year');
+  return year === 'all' || TOTALYEAR.indexOf(year) !== -1 ? year : '115';
+}
+
+function showSelectedYear(selection) {
+  selectedTeam = selection === 'all' ? TOTALYEAR.slice() : [selection];
+  $('#team-select').val(selection);
+  document.title = `${selection === 'all' ? '全部團隊' : getYearLabel(selection)}｜新創基地培育團隊｜新創圓夢網`;
+  initPage(selectedTeam);
+  refreshOverviewVideo();
+}
 
 $(document).ready(function () {
-  var TOTALYEAR = ['108', '109', '110', '111', '112', '113', '114', '115'];
-  $('#team-select').val(selectedTeam[0]);
-  initPage(selectedTeam);
+  showSelectedYear(getSelectedYearFromUrl());
   $('#team-select').on('change', function () {
     var selection = $(this).val();
-    selectedTeam = selection === 'all' ? TOTALYEAR : [selection];
-    initPage(selectedTeam);
-    refreshOverviewVideo();
+    var url = new URL(window.location.href);
+    url.searchParams.set('year', selection);
+    if (url.href !== window.location.href) {
+      window.history.pushState(null, '', url.href);
+    }
+    showSelectedYear(selection);
   });
-  refreshOverviewVideo();
+  $(window).on('popstate', function () {
+    showSelectedYear(getSelectedYearFromUrl());
+  });
 });
