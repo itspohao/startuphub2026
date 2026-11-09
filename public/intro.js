@@ -113,7 +113,7 @@ function initImagesCarousel(team, year) {
 
 function initTeamsCarousel(data, year) {
   var list = $('#carousel_list');
-  $(data).each(function (index, team) {
+  data.forEach(function (team) {
     var assetIndex = team.assetIndex !== undefined ? team.assetIndex : team.index;
     var img = `./assets/images/${year}/${assetIndex}/logo.jpg`;
     var card = $('<a>')
@@ -256,16 +256,18 @@ $(document).ready(function () {
   var teamIndex = getTeamIndex();
   var teamYear = getTeamYear();
   var data = TEAMS[teamYear];
+  var team = data && data[teamIndex];
 
-  if (!data || !data[teamIndex]) {
+  if (!team || team.hidden) {
     $('#team-page-title').text('找不到團隊資料');
     document.title = '找不到團隊資料｜新創基地｜新創圓夢網';
     return;
   }
 
   $('.intro-content').hide();
-  initSpContent(data[teamIndex], teamYear);
-  initTeamsCarousel(data, teamYear);
+  var visibleTeams = data.filter(team => !team.hidden);
+  initSpContent(team, teamYear);
+  initTeamsCarousel(visibleTeams, teamYear);
 
   if ($.fn.owlCarousel) {
     var carousel = $('.owl-carousel');
@@ -283,7 +285,7 @@ $(document).ready(function () {
       updateCarouselAccessibility
     );
     carousel.owlCarousel({
-      startPosition: teamIndex,
+      startPosition: visibleTeams.indexOf(team),
       loop: false,
       margin: 10,
       nav: true,
