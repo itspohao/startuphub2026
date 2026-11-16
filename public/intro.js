@@ -25,6 +25,10 @@ function appendTeamLink(container, team, label, url) {
     .appendTo(row);
 }
 
+function usesTextVideoLink(videoId) {
+  return ['fJ9ftUHCHGU', 'GwErp4NmqrU'].includes(videoId);
+}
+
 function createYouTubeLink(videoId, title) {
   var encodedVideoId = encodeURIComponent(videoId);
   var thumbnailSources = [
@@ -33,6 +37,8 @@ function createYouTubeLink(videoId, title) {
     `https://img.youtube.com/vi/${encodedVideoId}/hqdefault.jpg`,
   ];
   var thumbnailIndex = 0;
+  var useStandardThumbnail = videoId === '1nRDsnJ7rMo';
+  if (useStandardThumbnail) thumbnailSources.reverse();
   var link = $('<a>')
     .addClass('youtube-link-card')
     .attr({
@@ -41,6 +47,12 @@ function createYouTubeLink(videoId, title) {
       rel: 'noopener noreferrer',
       'aria-label': `${title}（YouTube，另開新視窗）`,
     });
+  if (usesTextVideoLink(videoId)) {
+    return link.removeClass('youtube-link-card')
+      .css({ display: 'inline-block', color: '#0056b3', textDecoration: 'underline' })
+      .text(`${title}（另開 YouTube）`)
+      .removeAttr('aria-label');
+  }
   var thumbnail = $('<img>')
     .attr({
       src: thumbnailSources[thumbnailIndex],
@@ -55,6 +67,10 @@ function createYouTubeLink(videoId, title) {
         this.src = './assets/images/sme.jpg';
       }
     });
+  if (useStandardThumbnail) {
+    thumbnail.css('object-fit', 'contain');
+    thumbnail.css('max-width', '480px').css('margin-inline', 'auto');
+  }
   $('<span>').addClass('youtube-thumbnail').append(thumbnail).appendTo(link);
   $('<span>').addClass('youtube-link-title').text(title).appendTo(link);
   return link;
@@ -169,7 +185,7 @@ function initSpContent(team, year) {
 
   if (team.youtube) {
     var vid = $('#sp-content-vid');
-    vid.addClass('video');
+    if (!usesTextVideoLink(team.youtube)) vid.addClass('video');
     createYouTubeLink(team.youtube, `觀看${team.name}團隊介紹影片`).appendTo(vid);
   }
 
