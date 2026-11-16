@@ -153,6 +153,8 @@ function appendTeamInfo(container, label, value, fallback) {
 }
 
 function initSpContent(team, year) {
+  var legacy = Number(year) >= 108 && Number(year) <= 111;
+  var hasValue = value => !['', '未提供', '建置中', '暫無'].includes(String(formatTeamValue(value, '')).trim());
   var index = team.assetIndex !== undefined ? team.assetIndex : team.index;
   var hasNewContent = Array.isArray(team.section);
   var coverImage = hasNewContent ? 'cover.jpg' : 'carousel1.jpg';
@@ -192,13 +194,19 @@ function initSpContent(team, year) {
   if (team.tagline) {
     appendTeamInfo(intro, '一句話形容自己', team.tagline, '');
   }
-  appendTeamInfo(intro, '產品服務', team.product, '未提供');
-  appendTeamInfo(intro, '發展階段', team.stage, '未提供');
-  appendTeamInfo(intro, '登記時間', team.found, '未提供');
-  appendTeamInfo(intro, '募資階段', team.funding, '未提供');
+  if (!legacy) appendTeamInfo(intro, '產品服務', team.product, '未提供');
+  if (!legacy || hasValue(team.stage)) appendTeamInfo(intro, '發展階段', team.stage, '未提供');
+  if (!legacy || hasValue(team.found)) appendTeamInfo(intro, '登記時間', team.found, '未提供');
+  if (!legacy || hasValue(team.funding)) appendTeamInfo(intro, '募資階段', team.funding, '未提供');
   intro.addClass('label-text');
 
   var detail = $('.detail');
+  if (legacy) {
+    var products = Array.isArray(team.product) ? team.product : [team.product];
+    products.filter(hasValue).forEach(function (product) {
+      $('<p>').css('font-size', '1.2rem').text(product).appendTo(detail);
+    });
+  }
   detailTexts.forEach((text, i) => {
     var block = $('<div>')
       .css('margin-top', '24px')
@@ -235,9 +243,9 @@ function initSpContent(team, year) {
   });
 
   var remark = $('.remark').addClass('label-text');
-  if (team.web) {
+  if (legacy ? hasValue(team.web) : team.web) {
     appendTeamLink(remark, team, '官方網站', team.web);
-  } else {
+  } else if (!legacy) {
     $('<div>').text('官方網站：建置中').appendTo(remark);
   }
   if (team.fb) appendTeamLink(remark, team, 'Facebook 官方頁面', team.fb);
@@ -245,7 +253,7 @@ function initSpContent(team, year) {
   if (team.podcast) appendTeamLink(remark, team, 'Podcast', team.podcast);
 
   var resource = formatTeamValue(team.resource, '暫無');
-  if (Number(year) >= 108 && Number(year) <= 111 && ['', '暫無'].includes(String(resource).trim())) return;
+  if (legacy && !hasValue(resource)) return;
 
   $('<div>')
     .css({ display: 'flex' })
