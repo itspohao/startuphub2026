@@ -29,7 +29,8 @@ function usesTextVideoLink(videoId) {
   return ['fJ9ftUHCHGU', 'GwErp4NmqrU'].includes(videoId);
 }
 
-function createYouTubeLink(videoId, title) {
+function createYouTubeLink(videoId, title, year) {
+  var skipPlaceholder = String(year) === '109';
   var encodedVideoId = encodeURIComponent(videoId);
   var thumbnailSources = [
     `https://img.youtube.com/vi/${encodedVideoId}/maxresdefault.jpg`,
@@ -54,12 +55,19 @@ function createYouTubeLink(videoId, title) {
   if (usesTextVideoLink(videoId)) return showTextLink();
   var thumbnail = $('<img>')
     .attr('alt', '')
+    .on('load', function () {
+      if (skipPlaceholder && this.naturalWidth <= 120) thumbnail.triggerHandler('error');
+    })
     .on('error', function () {
       thumbnailIndex += 1;
       if (thumbnailIndex < thumbnailSources.length) {
         this.src = thumbnailSources[thumbnailIndex];
       } else {
-        thumbnail.off('error');
+        thumbnail.off('load error');
+        if (skipPlaceholder) {
+          showTextLink();
+          return;
+        }
         this.src = './assets/images/sme.jpg';
       }
     });
@@ -178,8 +186,12 @@ function initSpContent(team, year) {
 
   if (team.youtube) {
     var vid = $('#sp-content-vid');
-    if (!usesTextVideoLink(team.youtube)) vid.addClass('video');
-    createYouTubeLink(team.youtube, `觀看${team.name}團隊介紹影片`).appendTo(vid);
+    if (String(year) === '109') {
+      vid.css('margin-bottom', '30px');
+    } else if (!usesTextVideoLink(team.youtube)) {
+      vid.addClass('video');
+    }
+    createYouTubeLink(team.youtube, `觀看${team.name}團隊介紹影片`, year).appendTo(vid);
   }
 
   var cover = $('.cover-photo');
