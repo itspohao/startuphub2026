@@ -244,10 +244,13 @@ function initSpContent(team, year) {
   if (team.ig) appendTeamLink(remark, team, 'Instagram 官方頁面', team.ig);
   if (team.podcast) appendTeamLink(remark, team, 'Podcast', team.podcast);
 
+  var resource = formatTeamValue(team.resource, '暫無');
+  if (Number(year) >= 108 && Number(year) <= 111 && ['', '暫無'].includes(String(resource).trim())) return;
+
   $('<div>')
     .css({ display: 'flex' })
     .html(
-      `<div style='white-space: nowrap;'>徵求資源：</div><div>${formatTeamValue(team.resource, '暫無')}</div>`
+      `<div style='white-space: nowrap;'>徵求資源：</div><div>${resource}</div>`
     )
     .appendTo(remark);
 }
