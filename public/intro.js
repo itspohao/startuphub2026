@@ -37,8 +37,6 @@ function createYouTubeLink(videoId, title) {
     `https://img.youtube.com/vi/${encodedVideoId}/hqdefault.jpg`,
   ];
   var thumbnailIndex = 0;
-  var useStandardThumbnail = videoId === '1nRDsnJ7rMo';
-  if (useStandardThumbnail) thumbnailSources.reverse();
   var link = $('<a>')
     .addClass('youtube-link-card')
     .attr({
@@ -47,17 +45,15 @@ function createYouTubeLink(videoId, title) {
       rel: 'noopener noreferrer',
       'aria-label': `${title}（YouTube，另開新視窗）`,
     });
-  if (usesTextVideoLink(videoId)) {
+  function showTextLink() {
     return link.removeClass('youtube-link-card')
       .css({ display: 'inline-block', color: '#0056b3', textDecoration: 'underline' })
       .text(`${title}（另開 YouTube）`)
       .removeAttr('aria-label');
   }
+  if (usesTextVideoLink(videoId)) return showTextLink();
   var thumbnail = $('<img>')
-    .attr({
-      src: thumbnailSources[thumbnailIndex],
-      alt: '',
-    })
+    .attr('alt', '')
     .on('error', function () {
       thumbnailIndex += 1;
       if (thumbnailIndex < thumbnailSources.length) {
@@ -67,12 +63,9 @@ function createYouTubeLink(videoId, title) {
         this.src = './assets/images/sme.jpg';
       }
     });
-  if (useStandardThumbnail) {
-    thumbnail.css('object-fit', 'contain');
-    thumbnail.css('max-width', '480px').css('margin-inline', 'auto');
-  }
   $('<span>').addClass('youtube-thumbnail').append(thumbnail).appendTo(link);
   $('<span>').addClass('youtube-link-title').text(title).appendTo(link);
+  thumbnail.attr('src', thumbnailSources[thumbnailIndex]);
   return link;
 }
 
