@@ -251,16 +251,20 @@ function initSpContent(team, year) {
 
     if (i < contentImageCount) {
       var imageName = hasNewContent ? `team_photo_${i + 1}.jpg` : `carousel${i + 2}.jpg`;
-      // 每組內容皆先圖後文；舊年度產品服務仍位於 detail 最前面。
-      $('<img>')
+      // 108 年度第一組先文後圖；其他年度維持先圖後文。
+      var image = $('<img>')
         .attr('src', `./assets/images/${year}/${index}/${imageName}`)
         .attr('alt', (team.imageAlts && team.imageAlts[i]) || `${team.name} 產品或團隊介紹圖片 ${i + 1}`)
         .attr('onerror', 'this.src="./assets/images/sme.jpg"')
         .css('margin-bottom', '16px')
         .css('width', '100%')
         .css('aspect-ratio', 'auto')
-        .css('object-fit', 'cover')
-        .insertBefore(description);
+        .css('object-fit', 'cover');
+      if (Number(year) === 108 && i === 0) {
+        image.css({ marginTop: '16px', marginBottom: 0 }).appendTo(block);
+      } else {
+        image.insertBefore(description);
+      }
     }
   });
 
